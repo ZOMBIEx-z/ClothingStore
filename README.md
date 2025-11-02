@@ -1,7 +1,7 @@
 ## How to launch:
 - Clone repository
 ```bash
-git clone #TODO
+git clone https://github.com/ZOMBIEx-z/ClothingStore.git
 cd ClothingStore
 ```
 
