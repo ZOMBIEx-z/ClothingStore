@@ -1,5 +1,5 @@
 FROM python:3.13
-LABEL authors="froonn"
+LABEL authors="ZOMBIEx-z"
 
 WORKDIR /app
 
