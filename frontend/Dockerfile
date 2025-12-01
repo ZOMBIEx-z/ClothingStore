@@ -1,4 +1,4 @@
-FROM node:25
+FROM node:25-slim
 LABEL authors="froonn"
 
 WORKDIR /app
