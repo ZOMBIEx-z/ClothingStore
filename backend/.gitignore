@@ -1,0 +1,3 @@
+generate_requirements.sh
+sql_app.db
+venv/

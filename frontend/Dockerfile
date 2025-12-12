@@ -1,16 +1,15 @@
-FROM node:25-slim
-LABEL authors="froonn"
+FROM node:20-slim
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json package-lock.json ./
 
 RUN npm install
 
 COPY . .
 
-RUN npm run build
+EXPOSE 3000
 
-EXPOSE 3001
+ENV HOST=0.0.0.0
 
-CMD ["npx", "serve", "-s", "build", "-l", "3001"]
+CMD ["npm", "start"]
