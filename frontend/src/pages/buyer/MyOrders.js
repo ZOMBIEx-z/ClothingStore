@@ -76,7 +76,7 @@ const MyOrders = () => {
                                 {order.items.map((item, index) => (
                                     <li key={index} style={itemStyle}>
                                         {item.product.name} ({item.quantity} шт.) —
-                                        {item.price_at_order.toFixed(2)} за шт.
+                                        {item.price_at_order.toFixed(2)} $ за шт.
                                     </li>
                                 ))}
                             </ul>

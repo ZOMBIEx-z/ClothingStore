@@ -4,7 +4,17 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
     // Структура товара в корзине: { product_id, name, price, quantity, store_id }
-    const [cartItems, setCartItems] = useState([]);
+    const [cartItems, setCartItems] = useState(() => {
+        // Попытка загрузить корзину из localStorage
+        const localData = localStorage.getItem('cartItems');
+        return localData ? JSON.parse(localData) : [];
+    });
+
+    // Сохранение в localStorage при изменении cartItems (необязательно, но полезно)
+    // useEffect(() => {
+    //     localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    // }, [cartItems]);
+
 
     /**
      * Добавление или обновление товара в корзине.
@@ -12,31 +22,35 @@ export const CartProvider = ({ children }) => {
      * @param {number} quantityToAdd - Количество для добавления (может быть отрицательным для уменьшения).
      */
     const addToCart = (product, quantityToAdd = 1) => {
+        console.log(product, quantityToAdd);
+
         setCartItems(prevItems => {
-            const existingItemIndex = prevItems.findIndex(item => item.product_id === product.id);
+            console.log('вызов setCartItems');
+            const productIdToFind = product.id || product.product_id;
+            const existingItemIndex = prevItems.findIndex(item => item.product_id === productIdToFind);
 
             if (existingItemIndex > -1) {
-                // Товар уже есть в корзине, обновляем количество
                 const updatedItems = [...prevItems];
+
+                console.log(updatedItems[existingItemIndex].quantity);
                 const newQuantity = updatedItems[existingItemIndex].quantity + quantityToAdd;
+                console.log(newQuantity);
 
                 if (newQuantity <= 0) {
-                    // Удаляем, если количество стало <= 0
-                    return updatedItems.filter(item => item.product_id !== product.id);
+                    return updatedItems.filter(item => item.product_id !== productIdToFind);
                 }
 
                 updatedItems[existingItemIndex].quantity = newQuantity;
                 return updatedItems;
 
             } else if (quantityToAdd > 0) {
-                // Новый товар
                 return [
                     ...prevItems,
                     {
                         product_id: product.id,
                         name: product.name,
                         price: product.price,
-                        store_id: product.store_id, // Сохраняем ID магазина для проверки
+                        store_id: product.store_id,
                         quantity: quantityToAdd,
                     }
                 ];
@@ -58,7 +72,7 @@ export const CartProvider = ({ children }) => {
     const totalCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, removeItemFromCart, clearCart, totalAmount, totalCount }}>
+        <CartContext.Provider value={{cartItems, addToCart, removeItemFromCart, clearCart, totalAmount, totalCount}}>
             {children}
         </CartContext.Provider>
     );

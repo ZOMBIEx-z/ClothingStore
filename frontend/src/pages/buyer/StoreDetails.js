@@ -51,8 +51,11 @@ const StoreDetails = () => {
         return <h2 style={{ color: 'red' }}>Ошибка: {error}</h2>;
     }
 
-    const handleAddToCart = (product) => {
-        addToCart(product, 1);
+    const handleUpdateCart = (product, quantity) => {
+        const productForCart = {
+            ...product,
+        };
+        addToCart(productForCart, quantity);
     };
 
     // Функция для получения текущего количества товара в корзине
@@ -87,7 +90,7 @@ const StoreDetails = () => {
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
 
                                     <button
-                                        onClick={() => handleAddToCart(product)}
+                                        onClick={() => handleUpdateCart(product, 1)} // ИСПОЛЬЗУЕМ НОВЫЙ ОБРАБОТЧИК
                                         style={{ padding: '8px 12px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                                     >
                                         Добавить в корзину
@@ -99,7 +102,7 @@ const StoreDetails = () => {
                                                 В корзине: {currentQuantity}
                                             </span>
                                             <button
-                                                onClick={() => addToCart(product, -1)}
+                                                onClick={() => handleUpdateCart(product, -1)}
                                                 style={{ padding: '8px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
                                             >
                                                 -
